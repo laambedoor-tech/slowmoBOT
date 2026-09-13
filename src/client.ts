@@ -9,10 +9,6 @@ export class BotClient extends Client {
 
 export function createClient(): BotClient {
   return new BotClient({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMembers,
-      GatewayIntentBits.GuildMessages,
-    ],
+    intents: [GatewayIntentBits.Guilds],
   });
 }
