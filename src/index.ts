@@ -6,6 +6,7 @@ import { loadSelectMenus } from "./handlers/loadSelectMenus";
 import { loadModals } from "./handlers/loadModals";
 import { registerReadyEvent } from "./events/ready";
 import { registerInteractionCreateEvent } from "./events/interactionCreate";
+import { registerGuildMemberAddEvent } from "./events/guildMemberAdd";
 
 const client = createClient();
 
@@ -16,5 +17,6 @@ loadModals(client);
 
 registerReadyEvent(client);
 registerInteractionCreateEvent(client);
+registerGuildMemberAddEvent(client);
 
 client.login(config.token);
