@@ -41,6 +41,46 @@ export function registerInteractionCreateEvent(client: BotClient) {
           await interaction.reply(payload);
         }
       }
+      return;
+    }
+
+    if (interaction.isStringSelectMenu()) {
+      const handler = client.selectMenus.get(interaction.customId);
+      if (!handler) return;
+
+      try {
+        await handler.execute(interaction);
+      } catch (error) {
+        console.error(`Error ejecutando el select menu ${interaction.customId}:`, error);
+        const payload = { content: "Hubo un error al procesar esta accion.", ephemeral: true };
+        if (interaction.replied || interaction.deferred) {
+          await interaction.followUp(payload);
+        } else {
+          await interaction.reply(payload);
+        }
+      }
+      return;
+    }
+
+    if (interaction.isModalSubmit()) {
+      const exact = client.modals.get(interaction.customId);
+      const handler =
+        exact ??
+        [...client.modals.values()].find((m) => interaction.customId.startsWith(m.customId));
+
+      if (!handler) return;
+
+      try {
+        await handler.execute(interaction);
+      } catch (error) {
+        console.error(`Error ejecutando el modal ${interaction.customId}:`, error);
+        const payload = { content: "Hubo un error al procesar esta accion.", ephemeral: true };
+        if (interaction.replied || interaction.deferred) {
+          await interaction.followUp(payload);
+        } else {
+          await interaction.reply(payload);
+        }
+      }
     }
   });
 }
